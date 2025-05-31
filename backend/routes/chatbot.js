@@ -20,7 +20,7 @@ router.post("/send-message", async (req, res) => {
 
     res.status(200).json(response.choices[0].message);
   } catch (error) {
-    console.error("Error fetching from openai API");
+    console.error("Error fetching from openai API:", error);
   }
 });
 
