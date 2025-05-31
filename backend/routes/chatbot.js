@@ -3,6 +3,7 @@ import { OpenAI } from "openai/client.js";
 import dotenv from "dotenv";
 
 const router = express.Router();
+dotenv.config();
 
 const openAIConnection = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
