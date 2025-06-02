@@ -1,11 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
+import ArrowIcon from "./assets/arrow.png"
+import "./styles/styles.css"
 
 function App() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleMessageSend() {
+  function handleMessageSend(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
     const cleanedInput = inputValue.trim();
     if (cleanedInput == "") {
       // do not make an API call if there is no message
@@ -18,6 +22,7 @@ function App() {
 
     setMessages(updatedMessages);
     setInputValue("");
+    setLoading(true);
     sendChatMessage(updatedMessages);
   }
 
@@ -35,53 +40,51 @@ function App() {
         role: response.data.role,
         content: response.data.content,
       };
+      setLoading(false);
 
       setMessages((prevMessages) => [...prevMessages, newResponseObject]);
     } catch (error) {
+      setLoading(false);
       console.error("Error sending message:", error);
     }
   };
 
   return (
     <>
-      <div>
-        <div
-          style={{
-            marginBottom: "20px",
-            maxHeight: "400px",
-            overflowY: "auto",
-          }}
-        >
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              style={{ padding: "8px", borderBottom: "1px solid #eee" }}
-            >
-              {message.content}
-            </div>
-          ))}
-        </div>
-
-        <div style={{ display: "flex", gap: "10px" }}>
-          <input
-            type="text"
-            placeholder="Send a message!"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            style={{ flex: 1, padding: "8px" }}
-          />
+      <div className="app-container">
+        <div className="chat-container">
           <div
-            onClick={handleMessageSend}
-            style={{
-              padding: "8px 16px",
-              backgroundColor: "#007bff",
-              color: "white",
-              cursor: "pointer",
-              borderRadius: "4px",
-            }}
+            className="messages-container"
           >
-            <p style={{ margin: 0 }}>Send Message</p>
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`message ${message.role}`}
+              >
+                {message.content}
+              </div>
+            ))}
+            {loading && (
+            <div className="message-loading">
+              <div className="loading-bubble">...</div>
+            </div>
+            )}
           </div>
+
+          <form className="form-section" onSubmit={handleMessageSend}>
+            <input
+              type="text"
+              placeholder="Send a message!"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              className="input-field"
+            />
+            <div className="button-container">
+              <button className="arrow-button" type="submit">
+                <img src={ArrowIcon} />
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>
