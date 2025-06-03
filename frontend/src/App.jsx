@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import ArrowIcon from "./assets/arrow.png"
-import "./styles/styles.css"
+import ArrowIcon from "./assets/arrow.png";
+import "./styles/styles.css";
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -29,7 +29,7 @@ function App() {
   const sendChatMessage = async (messageArray) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/chat/send-message",
+        "https://openai-chatbot-demo.onrender.com/chat/send-message",
         {
           model: "gpt-3.5-turbo",
           messages: messageArray,
@@ -53,21 +53,16 @@ function App() {
     <>
       <div className="app-container">
         <div className="chat-container">
-          <div
-            className="messages-container"
-          >
+          <div className="messages-container">
             {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`message ${message.role}`}
-              >
+              <div key={index} className={`message ${message.role}`}>
                 {message.content}
               </div>
             ))}
             {loading && (
-            <div className="message-loading">
-              <div className="loading-bubble">...</div>
-            </div>
+              <div className="message-loading">
+                <div className="loading-bubble">...</div>
+              </div>
             )}
           </div>
 
