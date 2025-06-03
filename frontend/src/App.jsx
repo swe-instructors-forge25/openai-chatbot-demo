@@ -27,14 +27,13 @@ function App() {
   }
 
   const sendChatMessage = async (messageArray) => {
+    const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+
     try {
-      const response = await axios.post(
-        "https://openai-chatbot-demo.onrender.com/chat/send-message",
-        {
-          model: "gpt-3.5-turbo",
-          messages: messageArray,
-        }
-      );
+      const response = await axios.post(`${baseUrl}/chat/send-message`, {
+        model: "gpt-3.5-turbo",
+        messages: messageArray,
+      });
 
       const newResponseObject = {
         role: response.data.role,
